@@ -21,6 +21,7 @@
 		88B857D60FA1EF5D0060EA3B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B857D50FA1EF5D0060EA3B /* Icon.png */; };
 		88B857DE0FA1EF740060EA3B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B857DD0FA1EF740060EA3B /* QuartzCore.framework */; };
 		88B857F40FA1EF860060EA3B /* Capitals.glyphset in Resources */ = {isa = PBXBuildFile; fileRef = 88B857F30FA1EF860060EA3B /* Capitals.glyphset */; };
+		88B858C70FA1FEE20060EA3B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B858C60FA1FEE20060EA3B /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		88B857D50FA1EF5D0060EA3B /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		88B857DD0FA1EF740060EA3B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		88B857F30FA1EF860060EA3B /* Capitals.glyphset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Capitals.glyphset; sourceTree = "<group>"; };
+		88B858C60FA1FEE20060EA3B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Letters-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Letters-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				88B857F30FA1EF860060EA3B /* Capitals.glyphset */,
+				88B858C60FA1FEE20060EA3B /* Default.png */,
 				88B857D50FA1EF5D0060EA3B /* Icon.png */,
 				2899E5210DE3E06400AC0155 /* LettersViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
@@ -178,6 +181,7 @@
 				2899E5220DE3E06400AC0155 /* LettersViewController.xib in Resources */,
 				88B857D60FA1EF5D0060EA3B /* Icon.png in Resources */,
 				88B857F40FA1EF860060EA3B /* Capitals.glyphset in Resources */,
+				88B858C70FA1FEE20060EA3B /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
