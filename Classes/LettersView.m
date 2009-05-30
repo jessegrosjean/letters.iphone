@@ -90,20 +90,20 @@
 	loading = NO;	
 }
 
-@synthesize score;
 @synthesize group;
 
 - (void)setGroup:(LetterGroup *)newGroup {
 	[group autorelease];
 	group = [newGroup retain];
-	self.score = 0;
 	sequenceNumber = 0;
 	if (!group) {
+		[self stopAnimation];
 		self.showInformation = YES;
 	} else {
 		self.showInformation = NO;
-		[self doAnimation];
+		[self startAnimation];
 	}
+	[self setNeedsDisplay];
 }
 
 @synthesize showInformation;
@@ -179,11 +179,20 @@
 	self.group = (id) [LetterGroup groupAndPositionTiles:tiles inRect:self.bounds];		
 }
 
-- (void)doAnimation {
-	animationStart = [NSDate timeIntervalSinceReferenceDate];
-	animationDuration = 0.3;
-	[LettersView cancelPreviousPerformRequestsWithTarget:self selector:@selector(stepAnimations) object:nil];
-	[self performSelector:@selector(stepAnimations) withObject:nil afterDelay:0];
+- (void)startAnimation {
+	if (!animationTimer) {
+		[animationTimer invalidate];
+		[animationTimer release];
+		animationTimer = [[NSTimer scheduledTimerWithTimeInterval:1.0/24.0 target:self selector:@selector(stepAnimations) userInfo:nil repeats:YES] retain];
+		animationStart = [NSDate timeIntervalSinceReferenceDate];
+		animationDuration = 0.3;
+	}
+}
+
+- (void)stopAnimation {
+	[animationTimer invalidate];
+	[animationTimer release];
+	animationTimer = nil;
 }
 
 - (void)stepAnimations {
@@ -194,34 +203,41 @@
 	progress = MAX(0, progress);
 	
 	[group stepAnimationWithProgress:progress];
-
+	
 	[self setNeedsDisplay];
 	
-	if (currentClock < (animationStart + animationDuration)) {
-		[self performSelector:@selector(stepAnimations) withObject:nil afterDelay:1.0/30.0];
-	} else {
+	// If completed current animation schedule a long term grow animation
+	// for the current tile.
+	if (currentClock > (animationStart + animationDuration)) {
 		NSMutableArray *allTiles = [NSMutableArray array];
 		[self.group collectEntireContentsWithSelf:allTiles];
 		for (Letter *each in allTiles) {
 			if (each.sequenceNumber == sequenceNumber) {
-				each.weight += 0.25;
+				each.weight += (0.05 * 30 * 1);
 			}
 		}
 		[self.group animateToFrame:self.group.frame];
-		[self doAnimation];
+		animationStart = [NSDate timeIntervalSinceReferenceDate];
+		animationDuration = 1.0;
 	}
 }
 
 - (void)drawRect:(CGRect)rect {
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	//CGContextSetAllowsAntialiasing(context, NO);
+	CGContextSetShouldAntialias(context, NO);
+	//CGContextSetShouldSmoothFonts(context, NO);
+	//CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+	CGContextSetFlatness(context, 30);
+	
 	[[LettersView backgroundColor] set];
 	UIRectFill(rect);
 	[[LettersView foregroundColor] set];
-	[group drawRect:rect];
+	[group drawRect:rect currentSequenceNumber:sequenceNumber];
 }
 
 - (void)updateTouching:(UIEvent *)event {
-	BOOL doAnimation = NO;
-	
 	for (UITouch *each in event.allTouches) {
 		CGPoint touchLocation = [each locationInView:self];
 		Letter *picked = [group pick:touchLocation];
@@ -230,54 +246,20 @@
 		if (phase != UITouchPhaseEnded && phase != UITouchPhaseCancelled) {
 			if (picked.sequenceNumber == sequenceNumber) {
 				if (phase == UITouchPhaseBegan) {
-					NSTimeInterval currentSequencePickTime = [NSDate timeIntervalSinceReferenceDate];
-					NSUInteger currentSequencePickScore = 0;
-					if (lastSequencePickTime != 0) {
-						currentSequencePickScore = 1.0 / ((currentSequencePickTime - lastSequencePickTime) / 5);
-						if (currentSequencePickScore > 1) {
-							currentSequencePickScore = (currentSequencePickScore + (lastSequencePickScore / 100)) * 10;
-							self.score += currentSequencePickScore;
-							/*
-							UILabel *scoreLable = [[[UILabel alloc] init] autorelease];
-							scoreLable.backgroundColor = nil;
-							scoreLable.font = [UIFont systemFontOfSize:72];
-							scoreLable.opaque = NO;
-							scoreLable.textColor = [TilesView foregroundColor];
-							scoreLable.text = [NSString stringWithFormat:@"+%i", (int) currentSequencePickScore];
-							[scoreLable sizeToFit];
-							scoreLable.center = CGPointMake(CGRectGetMidX(picked.frame), CGRectGetMidY(picked.frame));
-							
-							
-							[self addSubview:scoreLable];
-							[CATransaction begin];
-							[CATransaction setValue:[NSNumber numberWithFloat:2.0] forKey:kCATransactionAnimationDuration];
-							[CATransaction commit];*/
-						}
-					}
-					lastSequencePickScore += currentSequencePickScore;
-					lastSequencePickTime = currentSequencePickTime;
 					[picked.group removeTile:picked];
 					
 					if ([group isEmpty]) {
 						self.group = nil;
 					} else {
-						[group animateToFrame:group.frame];
 						sequenceNumber++;
-						doAnimation = YES;
+						[group calculateWeightFromSequenceNumber:sequenceNumber];
+						[group animateToFrame:group.frame];
+						animationStart = [NSDate timeIntervalSinceReferenceDate];
+						animationDuration = 0.3;
 					}
-				}
-			} else {
-				if (picked) {
-					// Bad pick... should make a bad sound.
-					lastSequencePickScore = 0;
 				}
 			}
 		}
-	}
-	if (doAnimation) {
-		[self doAnimation];
-	} else {
-		[self setNeedsDisplay];
 	}
 }
 
@@ -297,10 +279,8 @@
 	[self updateTouching:event];
 }
 
-- (void)touchesCanceled {
-}
-
 - (void)dealloc {
+	[self stopAnimation];
 	[group release];
 	[super dealloc];
 }

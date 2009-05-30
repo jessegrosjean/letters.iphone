@@ -31,9 +31,11 @@
 @property (assign) CGFloat weight;
 @property (readonly) NSUInteger sequenceNumber;
 
+- (void)calculateWeightFromSequenceNumber:(NSUInteger)aSequenceNumber;
+
 - (void)randomizeWeight;
 - (void)setStartFrame:(CGRect)aFrame;
-- (void)drawRect:(CGRect)aRect;
+- (void)drawRect:(CGRect)aRect currentSequenceNumber:(NSUInteger)currentSequenceNumber;
 - (void)animateToFrame:(CGRect)aRect;
 - (void)stepAnimationWithProgress:(CGFloat)progress;
 - (Letter *)pick:(CGPoint)location;

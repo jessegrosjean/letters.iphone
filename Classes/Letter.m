@@ -17,7 +17,7 @@
 		sequenceNumber = aSequenceNumber;
 		glyphPath = CGPathRetain(aGlyphPath);
 		glyphPathBoundingBox = CGPathGetBoundingBox(glyphPath);
-		[self randomizeWeight];
+		[self calculateWeightFromSequenceNumber:0];
 	}
 	return self;
 }
@@ -29,6 +29,19 @@
 }
 
 @synthesize weight;
+
+- (void)calculateWeightFromSequenceNumber:(NSUInteger)aSequenceNumber {
+	CGFloat diff = sequenceNumber - aSequenceNumber;
+	CGFloat count = 7;
+
+	if (diff > count) {
+		weight = 0.005;
+	} else {
+		//0, 1, 2, 3;
+		weight = 1.0 - (diff / count);
+		//weight = sqrtf(weight);
+	}
+}
 
 - (void)randomizeWeight {
 	weight = (random() % 100) / (CGFloat) 100;
@@ -50,12 +63,32 @@
 	}
 }
 
-- (void)drawRect:(CGRect)aRect {			
+- (void)drawRect:(CGRect)aRect currentSequenceNumber:(NSUInteger)currentSequenceNumber {
+	if (weight < 0.01) {
+		return;
+	}
+	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGRect scaleToFitRect = frame;
 
 	CGContextSaveGState(context);
 	CGContextTranslateCTM(context, frame.origin.x, frame.origin.y);
+
+	if (weight >= 1.0) {
+		//CGContextSetShouldAntialias(context, YES);
+		CGContextSetFlatness(context, 1);
+	} else {
+		[[UIColor colorWithWhite:weight alpha:1.0] set];
+		
+		if (weight > 0.8) {
+			CGContextSetFlatness(context, 5);
+		//	CGContextSetShouldAntialias(context, YES);
+		} else {
+			CGContextSetFlatness(context, 1000);
+		//	CGContextSetShouldAntialias(context, NO);
+		}
+	}
+	
 	if (flipper) {
 		CGFloat scaleX = scaleToFitRect.size.width / glyphPathBoundingBox.size.height;
 		CGFloat scaleY = scaleToFitRect.size.height / glyphPathBoundingBox.size.width;

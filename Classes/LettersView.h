@@ -16,22 +16,20 @@
 	UIView *information;
 	BOOL showInformation;
 	BOOL loading;
-	NSUInteger score;
 	LetterGroup *group;
+	NSTimer *animationTimer;
 	NSTimeInterval animationStart;
 	NSTimeInterval animationDuration;
-	NSTimeInterval lastSequencePickTime;
-	NSUInteger lastSequencePickScore;
 	NSUInteger sequenceNumber;
 }
 
 + (UIColor *)foregroundColor;
 + (UIColor *)backgroundColor;
 
-@property (assign) NSUInteger score;
 @property (retain) LetterGroup *group;
 @property (assign) BOOL showInformation;
 
-- (void)doAnimation;
+- (void)startAnimation;
+- (void)stopAnimation;
 
 @end

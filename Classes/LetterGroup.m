@@ -72,14 +72,20 @@
 	return [[tiles valueForKeyPath:@"@sum.weight"] floatValue];
 }
 
-- (void)randomizeWeight {
-	[tiles makeObjectsPerformSelector:@selector(randomizeWeight)];
+//- (void)randomizeWeight {
+//	[tiles makeObjectsPerformSelector:@selector(randomizeWeight)];
+//}
+
+- (void)calculateWeightFromSequenceNumber:(NSUInteger)aSequenceNumber {
+	for (Letter *each in tiles) {
+		[each calculateWeightFromSequenceNumber:aSequenceNumber];
+	}
 }
 
-- (void)drawRect:(CGRect)aRect {
+- (void)drawRect:(CGRect)aRect currentSequenceNumber:(NSUInteger)currentSequenceNumber {
 	for (Letter *each in tiles) {
 		if (CGRectIntersectsRect(aRect, each.frame)) {
-			[each drawRect:aRect];
+			[each drawRect:aRect currentSequenceNumber:currentSequenceNumber];
 		}
 	}
 }
