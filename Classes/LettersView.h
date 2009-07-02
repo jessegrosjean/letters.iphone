@@ -11,8 +11,11 @@
 
 @class Letter;
 @class LetterGroup;
+@class LettersViewController;
 
 @interface LettersView : UIView {
+	IBOutlet LettersViewController *lettersViewController;
+	
 	UIView *information;
 	BOOL showInformation;
 	BOOL loading;

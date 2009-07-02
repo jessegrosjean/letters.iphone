@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface LettersViewController : UIViewController {
-
+	IBOutlet UIActivityIndicatorView *loadingProgress;
+	
+	NSMutableArray *tiles;
 }
+
+@property (retain) NSMutableArray *tiles;
 
 @end
 

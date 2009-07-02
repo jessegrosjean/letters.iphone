@@ -9,6 +9,7 @@
 #import "LettersView.h"
 #import "Letter.h"
 #import "LetterGroup.h"
+#import "LettersViewController.h"
 
 
 @implementation LettersView
@@ -27,7 +28,7 @@
     return self;
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib {	
 	UILabel *name = [[[UILabel alloc] init] autorelease];
 	name.text = NSLocalizedString(@"Letters", nil);
 	name.font = [UIFont boldSystemFontOfSize:24];
@@ -130,53 +131,18 @@
 }
 
 - (void)loadNewGame {
-	sequenceNumber = 0;
+	NSMutableArray *tiles = [lettersViewController tiles];
 	
-	NSMutableArray *tiles = [[[NSMutableArray alloc] init] autorelease];
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	NSString *glyphSetString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Capitals.glyphset"]];
-	
-	NSEnumerator *glyphEnumerator = [[glyphSetString componentsSeparatedByString:@"###\n"] objectEnumerator];
-	NSString *eachGlyphString;
-	
-	while (eachGlyphString = [glyphEnumerator nextObject]) {
-		if ([eachGlyphString length] > 0) {
-			CGMutablePathRef glyphPath = CGPathCreateMutable();
-			NSEnumerator *glyphComponentEnumerator = [[eachGlyphString componentsSeparatedByString:@"\n"] objectEnumerator];
-			NSString *eachGlyphComponent;
-			
-			while (eachGlyphComponent = [glyphComponentEnumerator nextObject]) {
-				if ([eachGlyphString length] > 0) {
-					if ([eachGlyphComponent isEqualToString:@"1"]) {
-						NSNumber *x1 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *y1 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						CGPathMoveToPoint(glyphPath, NULL, [x1 floatValue], [y1 floatValue]);
-					} else if ([eachGlyphComponent isEqualToString:@"2"]) {
-						NSNumber *x1 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *y1 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						CGPathAddLineToPoint(glyphPath, NULL, [x1 floatValue], [y1 floatValue]);
-					} else if ([eachGlyphComponent isEqualToString:@"3"]) {
-						NSNumber *x1 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *y1 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *x2 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *y2 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *x3 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						NSNumber *y3 = [numberFormatter numberFromString:[glyphComponentEnumerator nextObject]];
-						CGPathAddCurveToPoint(glyphPath, NULL, [x1 floatValue], [y1 floatValue], [x2 floatValue], [y2 floatValue], [x3 floatValue], [y3 floatValue]);
-					} else if ([eachGlyphComponent isEqualToString:@"4"]) {
-						CGPathCloseSubpath(glyphPath);
-					}
-				}
-			}
-			[tiles addObject:[[[Letter alloc] initWithGlyphPath:glyphPath sequenceNumber:sequenceNumber++] autorelease]];
-			
-			CFRelease(glyphPath);
-		}
+	if (tiles) {
+		sequenceNumber = 0;
+		[self randomizeArray:[lettersViewController tiles]];
+		self.group = (id) [LetterGroup groupAndPositionTiles:[lettersViewController tiles] inRect:self.bounds];
+		[group calculateWeightFromSequenceNumber:sequenceNumber];
+		[group animateToFrame:self.frame];
+		[group stepAnimationWithProgress:1.0];
+	} else {
+		[self performSelector:@selector(loadNewGame) withObject:nil afterDelay:0.5];
 	}
-	
-	[self randomizeArray:tiles];
-	
-	self.group = (id) [LetterGroup groupAndPositionTiles:tiles inRect:self.bounds];		
 }
 
 - (void)startAnimation {
@@ -226,10 +192,10 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
 	//CGContextSetAllowsAntialiasing(context, NO);
-	CGContextSetShouldAntialias(context, NO);
-	//CGContextSetShouldSmoothFonts(context, NO);
+	//CGContextSetShouldAntialias(context, NO);
+	CGContextSetShouldSmoothFonts(context, NO);
 	//CGContextSetInterpolationQuality(context, kCGInterpolationNone);
-	CGContextSetFlatness(context, 30);
+	CGContextSetFlatness(context, 1);
 	
 	[[LettersView backgroundColor] set];
 	UIRectFill(rect);

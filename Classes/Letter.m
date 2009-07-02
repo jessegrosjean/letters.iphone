@@ -67,7 +67,7 @@
 	if (weight < 0.01) {
 		return;
 	}
-	
+			
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGRect scaleToFitRect = frame;
 
@@ -76,17 +76,17 @@
 
 	if (weight >= 1.0) {
 		//CGContextSetShouldAntialias(context, YES);
-		CGContextSetFlatness(context, 1);
+		//CGContextSetFlatness(context, 1);
 	} else {
 		[[UIColor colorWithWhite:weight alpha:1.0] set];
 		
-		if (weight > 0.8) {
+		/*if (weight > 0.8) {
 			CGContextSetFlatness(context, 5);
-		//	CGContextSetShouldAntialias(context, YES);
+			//CGContextSetShouldAntialias(context, YES);
 		} else {
 			CGContextSetFlatness(context, 1000);
-		//	CGContextSetShouldAntialias(context, NO);
-		}
+			//CGContextSetShouldAntialias(context, NO);
+		}*/
 	}
 	
 	if (flipper) {
@@ -103,6 +103,7 @@
 
 	CGContextAddPath(context, glyphPath);
 	CGContextFillPath(context);
+	
 	CGContextRestoreGState(context);
 }
 
