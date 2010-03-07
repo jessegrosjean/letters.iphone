@@ -29,6 +29,8 @@
 + (UIColor *)foregroundColor;
 + (UIColor *)backgroundColor;
 
+- (void)initDisplay;
+
 @property (retain) LetterGroup *group;
 @property (assign) BOOL showInformation;
 

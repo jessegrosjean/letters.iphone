@@ -16,13 +16,18 @@
 - (void)viewDidLoad {
 	srandomdev();
 	[super viewDidLoad];
-	
+
+	[(LettersView *)self.view initDisplay];
+
+	CGPoint center = self.view.center;
+	center.y = center.y / 2;
+	loadingProgress.center = center;
 	[loadingProgress startAnimating];
 	[self performSelectorInBackground:@selector(loadTiles) withObject:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,7 +48,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSMutableArray *loadedTiles = [[NSMutableArray alloc] init];	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	NSString *glyphSetString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Capitals.glyphset"]];
+	NSString *glyphSetString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Capitals.glyphset"] encoding:NSUTF8StringEncoding error:NULL];
 	NSEnumerator *glyphEnumerator = [[glyphSetString componentsSeparatedByString:@"###\n"] objectEnumerator];
 	NSString *eachGlyphString;
 	

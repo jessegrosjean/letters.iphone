@@ -14,6 +14,10 @@
 @synthesize window;
 @synthesize viewController;
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+}
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
 	[application setStatusBarHidden:YES animated:NO];
     [window addSubview:viewController.view];

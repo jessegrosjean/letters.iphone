@@ -11,6 +11,9 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		884087C41142983600ACF710 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 884087C31142983600ACF710 /* MainWindow_iPad.xib */; };
+		8840885811433E2200ACF710 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 8840885711433E2200ACF710 /* Default-Portrait.png */; };
+		8840890C11434BA800ACF710 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 8840890B11434BA800ACF710 /* Default-Landscape.png */; };
 		884AA6B00FA7F97B008561BB /* LettersAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 884AA6A70FA7F97B008561BB /* LettersAppDelegate.m */; };
 		884AA6B10FA7F97B008561BB /* LettersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884AA6A90FA7F97B008561BB /* LettersViewController.m */; };
 		884AA6B20FA7F97B008561BB /* Letter.m in Sources */ = {isa = PBXBuildFile; fileRef = 884AA6AB0FA7F97B008561BB /* Letter.m */; };
@@ -30,6 +33,9 @@
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Letters_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Letters_Prefix.pch; sourceTree = "<group>"; };
+		884087C31142983600ACF710 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow_iPad.xib; path = "Resources-iPad/MainWindow_iPad.xib"; sourceTree = "<group>"; };
+		8840885711433E2200ACF710 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		8840890B11434BA800ACF710 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		884AA6A60FA7F97B008561BB /* LettersAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LettersAppDelegate.h; sourceTree = "<group>"; };
 		884AA6A70FA7F97B008561BB /* LettersAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LettersAppDelegate.m; sourceTree = "<group>"; };
 		884AA6A80FA7F97B008561BB /* LettersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LettersViewController.h; sourceTree = "<group>"; };
@@ -93,6 +99,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				884087C21142983600ACF710 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -129,6 +136,16 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		884087C21142983600ACF710 /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				884087C31142983600ACF710 /* MainWindow_iPad.xib */,
+				8840885711433E2200ACF710 /* Default-Portrait.png */,
+				8840890B11434BA800ACF710 /* Default-Landscape.png */,
+			);
+			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +195,9 @@
 				884AA6BC0FA7F9A0008561BB /* Icon.png in Resources */,
 				884AA6BD0FA7F9A0008561BB /* LettersViewController.xib in Resources */,
 				884AA6BE0FA7F9A0008561BB /* MainWindow.xib in Resources */,
+				884087C41142983600ACF710 /* MainWindow_iPad.xib in Resources */,
+				8840885811433E2200ACF710 /* Default-Portrait.png in Resources */,
+				8840890C11434BA800ACF710 /* Default-Landscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +231,8 @@
 				GCC_PREFIX_HEADER = Letters_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Letters;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -223,6 +245,8 @@
 				GCC_PREFIX_HEADER = Letters_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Letters;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -249,6 +273,8 @@
 				GCC_PREFIX_HEADER = Letters_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Letters;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
 		};

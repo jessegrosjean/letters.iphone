@@ -32,13 +32,20 @@
 
 - (void)calculateWeightFromSequenceNumber:(NSUInteger)aSequenceNumber {
 	CGFloat diff = sequenceNumber - aSequenceNumber;
-	CGFloat count = 7;
+	CGFloat maxLettersCount = 0;
 
-	if (diff > count) {
+	if (NSClassFromString(@"UISplitViewController")) {
+		maxLettersCount = 27;
+		//if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+	} else {
+		maxLettersCount = 7;
+	}
+		
+	if (diff > maxLettersCount) {
 		weight = 0.005;
 	} else {
 		//0, 1, 2, 3;
-		weight = 1.0 - (diff / count);
+		weight = 1.0 - (diff / maxLettersCount);
 		//weight = sqrtf(weight);
 	}
 }

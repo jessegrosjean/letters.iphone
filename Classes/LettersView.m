@@ -28,7 +28,7 @@
     return self;
 }
 
-- (void)awakeFromNib {	
+- (void)initDisplay {	
 	UILabel *name = [[[UILabel alloc] init] autorelease];
 	name.text = NSLocalizedString(@"Letters", nil);
 	name.font = [UIFont boldSystemFontOfSize:24];
@@ -55,7 +55,7 @@
 	information.alpha = 0.0;
 	[information addSubview:name];
 	[information addSubview:company];	
-	[information addSubview:instructions];	
+	[information addSubview:instructions];
 	
 	CGRect nameFrame = name.frame;
 	CGRect companyFrame = company.frame;
@@ -91,6 +91,16 @@
 	loading = NO;	
 }
 
+- (void)layoutSubviews {
+	[super layoutSubviews];
+
+	CGPoint center = self.center;
+	center = [self convertPoint:center fromView:self.superview];
+	information.center = center;
+	[group animateToFrame:self.bounds];
+	[group stepAnimationWithProgress:1.0];
+}
+
 @synthesize group;
 
 - (void)setGroup:(LetterGroup *)newGroup {
@@ -105,6 +115,7 @@
 		[self startAnimation];
 	}
 	[self setNeedsDisplay];
+	[self setNeedsLayout];
 }
 
 @synthesize showInformation;
@@ -138,8 +149,7 @@
 		[self randomizeArray:[lettersViewController tiles]];
 		self.group = (id) [LetterGroup groupAndPositionTiles:[lettersViewController tiles] inRect:self.bounds];
 		[group calculateWeightFromSequenceNumber:sequenceNumber];
-		[group animateToFrame:self.frame];
-		[group stepAnimationWithProgress:1.0];
+		[self setNeedsLayout];
 	} else {
 		[self performSelector:@selector(loadNewGame) withObject:nil afterDelay:0.5];
 	}
@@ -190,7 +200,7 @@
 
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
-
+	
 	//CGContextSetAllowsAntialiasing(context, NO);
 	//CGContextSetShouldAntialias(context, NO);
 	CGContextSetShouldSmoothFonts(context, NO);
