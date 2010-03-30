@@ -46,8 +46,8 @@
 	NSUInteger sequenceNumber = 0;
 	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSMutableArray *loadedTiles = [[NSMutableArray alloc] init];	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	NSMutableArray *loadedTiles = [[[NSMutableArray alloc] init] autorelease];	
+	NSNumberFormatter *numberFormatter = [[[NSNumberFormatter alloc] init] autorelease];
 	NSString *glyphSetString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Capitals.glyphset"] encoding:NSUTF8StringEncoding error:NULL];
 	NSEnumerator *glyphEnumerator = [[glyphSetString componentsSeparatedByString:@"###\n"] objectEnumerator];
 	NSString *eachGlyphString;
