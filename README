@@ -1,0 +1,7 @@
+My goal is to open source this code while still maintaining it as a commercial application.
+
+Please hack on the code, have fun, steal useful bits of code for your own use. Please do not clone the app and start selling or mass redistributing. If you make a change that you think is useful and you want me to include it in the official release send me a patch and I might do that.
+
+Letters reads "glyphsets" on startup to determine what letters to display. Use "Letters.SetBuilder" to create your own sets, including forground and background colors per character.
+
+Jesse
